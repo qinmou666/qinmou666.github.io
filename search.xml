@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title></title>
+    <url>/2024/04/16/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</url>
+    <content><![CDATA[<h1 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h1><p>动态规划有几个典型特征，<strong>最优子结构、状态转移方程、边界、重叠子问题</strong></p>
+<p>例如：</p>
+<p>一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 10 级的台阶总共有多少种跳法。</p>
+<p>试想：</p>
+<ul>
+<li>要想跳到第10级台阶，要么是先跳到第9级，然后再跳1级台阶上去;要么是先跳到第8级，然后一次迈2级台阶上去。</li>
+<li>同理，要想跳到第9级台阶，要么是先跳到第8级，然后再跳1级台阶上去;要么是先跳到第7级，然后一次迈2级台阶上去。</li>
+<li>要想跳到第8级台阶，要么是先跳到第7级，然后再跳1级台阶上去;要么是先跳到第6级，然后一次迈2级台阶上去。</li>
+</ul>
+<p>即可得到：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">f(<span class="number">10</span>)=f(<span class="number">9</span>)+f(<span class="number">8</span>)</span><br><span class="line">f(<span class="number">9</span>)=f(<span class="number">8</span>)+f(<span class="number">7</span>)</span><br><span class="line">f(<span class="number">8</span>)=f(<span class="number">7</span>)+f(<span class="number">6</span>)</span><br><span class="line">....</span><br><span class="line">f(<span class="number">3</span>)=f(<span class="number">2</span>)+f(<span class="number">1</span>)</span><br><span class="line">通用公式即为：f(n)=f(n<span class="number">-1</span>)+f(n<span class="number">-2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>那f(2) 或者 f(1) 等于多少呢？</p>
+<ul>
+<li>当只有2级台阶时，有两种跳法，第一种是直接跳两级，第二种是先跳一级，然后再跳一级。即f(2) &#x3D; 2;</li>
+<li>当只有1级台阶时，只有一种跳法，即f（1）&#x3D; 1；</li>
+</ul>
+<p>递归代码</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    public <span class="type">int</span> <span class="title function_">numWays</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(n == <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="keyword">if</span>(n == <span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> numWays(n<span class="number">-1</span>) + numWays(n<span class="number">-2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在leetcode会超出时间限制。为什么呢。我们看一下递归树</p>
+<p><img src="/image/image_ogmnactUCY.png"></p>
+<p>根据递归树，我们得知它的时间复杂度为O(2^n)，指数级别非常的高 。所以才会超出时间限制。</p>
+<p>观察递归树，f(8)计算了两遍，f(7)会被计算三遍。</p>
+<p>这些无味的计算我们可以使用哈希表来保存我们已经计算过的值就可以避免重复计算了。</p>
+<ul>
+<li>第一步，f（10）&#x3D; f(9) + f(8)，f(9) 和f（8）都需要计算出来，然后再加到备忘录中，如下：</li>
+</ul>
+<p><img src="https://pic4.zhimg.com/80/v2-f31e17b883d1eb45a906a83760b5e7f3_1440w.webp"></p>
+<ul>
+<li>第二步， f(9) &#x3D; f（8）+ f（7），f（8）&#x3D; f（7）+ f(6), 因为 f(8) 已经在备忘录中啦，所以可以省掉，f(7),f（6）都需要计算出来，加到备忘录中~</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-5c553e02bb63d74f9f1f3b91b994f584_1440w.webp"></p>
+<p>第三步， f(8) &#x3D; f（7）+ f(6),发现f(8)，f(7),f（6）全部都在备忘录上了，所以都可以剪掉。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-7675d5727f4e81db7fc897051ae2cecf_1440w.webp"></p>
+<p>所以呢，用了备忘录递归算法，递归树变成光秃秃的树干咯，如下：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-6c180511b9a2ef31f76c225b50f7cb9d_1440w.webp"></p>
+<p>带<strong>备忘录</strong>的递归算法，子问题个数&#x3D;树节点数&#x3D;n，解决一个子问题还是O(1),所以带<strong>备忘录</strong>的递归算法的时间复杂度是O(n)。</p>
+<p>代码实现；</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="comment">//使用哈希map，充当备忘录的作用</span></span><br><span class="line">    Map&lt;Integer, Integer&gt; tempMap = new HashMap();</span><br><span class="line">    public <span class="type">int</span> <span class="title function_">numWays</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        <span class="comment">// n = 0 也算1种</span></span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (n &lt;= <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> n;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//先判断有没计算过，即看看备忘录有没有</span></span><br><span class="line">        <span class="keyword">if</span> (tempMap.containsKey(n)) &#123;</span><br><span class="line">            <span class="comment">//备忘录有，即计算过，直接返回</span></span><br><span class="line">            <span class="keyword">return</span> tempMap.get(n);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 备忘录没有，即没有计算过，执行递归计算,并且把结果保存到备忘录map中，对1000000007取余（这个是leetcode题目规定的）</span></span><br><span class="line">            tempMap.put(n, (numWays(n - <span class="number">1</span>) + numWays(n - <span class="number">2</span>)) % <span class="number">1000000007</span>);</span><br><span class="line">            <span class="keyword">return</span> tempMap.get(n);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就解决了。</p>
+<p>我们分析一下其中的动态规划特征：</p>
+<p><strong>最优子结构：</strong> f(n-1)，f(n-2）称为问题的最优子结构</p>
+<p><strong>状态转移方程</strong> f(n)&#x3D;f(n-1)+f(n-2)根据规律化出方程</p>
+<p><strong>边界</strong> f(2),f(1)</p>
+<p><strong>重叠子问题</strong> 递归树中的重复计算问题。</p>
+<h3 id="什么样的问题可以考虑使用动态规划解决呢？"><a href="#什么样的问题可以考虑使用动态规划解决呢？" class="headerlink" title="什么样的问题可以考虑使用动态规划解决呢？"></a><strong>什么样的问题可以考虑使用动态规划解决呢？</strong></h3><blockquote>
+<p>★ 如果一个问题，可以把所有可能的答案穷举出来，并且穷举出来后，发现存在重叠子问题，就可以考虑使用动态规划。 &#x20;<br>”</p>
+</blockquote>
+<p>比如一些求最值的场景，如<strong>最长递增子序列、最小编辑距离、背包问题、凑零钱问题</strong>等等，都是动态规划的经典应用场景。</p>
+<p>动态规划的核心思想就是<strong>拆分子问题，记住过往，减少重复计算。</strong> 并且动态规划一般都是自底向上的，因此到这里，基于<strong>青蛙跳阶</strong>问题，我总结了一下我做动态规划的思路：</p>
+<ul>
+<li>穷举分析</li>
+<li>确定边界</li>
+<li>找出规律，确定最优子结构</li>
+<li>写出状态转移方程</li>
+</ul>
+<p>什么是最优子结构？有这么一个解释：</p>
+<blockquote>
+<p>★ 一道动态规划问题，其实就是一个递推问题。假设当前决策结果是f(n),则最优子结构就是要让 f(n-k) 最优,最优子结构性质就是能让转移到n的状态是最优的,并且与后面的决策没有关系,即让后面的决策安心地使用前面的局部最优解的一种性质 &#x20;<br>”</p>
+</blockquote>
+<p>我们实现代码的时候，一般注意从底往上遍历哈，然后关注下边界情况，空间复杂度，也就差不多啦。动态规划有个框架的，大家实现的时候，可以考虑适当参考一下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">dp[<span class="number">0</span>][<span class="number">0</span>][...] = 边界值</span><br><span class="line"><span class="keyword">for</span>(状态<span class="number">1</span> ：所有状态<span class="number">1</span>的值)&#123;</span><br><span class="line">    <span class="keyword">for</span>(状态<span class="number">2</span> ：所有状态<span class="number">2</span>的值)&#123;</span><br><span class="line">        <span class="keyword">for</span>(...)&#123;</span><br><span class="line">          <span class="comment">//状态转移方程</span></span><br><span class="line">          dp[状态<span class="number">1</span>][状态<span class="number">2</span>][...] = 求最值</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+</search>
