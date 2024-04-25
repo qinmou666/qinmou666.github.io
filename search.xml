@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
-    <url>/2024/04/16/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</url>
+    <title>动态规划</title>
+    <url>/2024/04/17/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</url>
     <content><![CDATA[<h1 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h1><p>动态规划有几个典型特征，<strong>最优子结构、状态转移方程、边界、重叠子问题</strong></p>
 <p>例如：</p>
 <p>一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 10 级的台阶总共有多少种跳法。</p>
@@ -67,6 +67,21 @@
 </blockquote>
 <p>我们实现代码的时候，一般注意从底往上遍历哈，然后关注下边界情况，空间复杂度，也就差不多啦。动态规划有个框架的，大家实现的时候，可以考虑适当参考一下：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">dp[<span class="number">0</span>][<span class="number">0</span>][...] = 边界值</span><br><span class="line"><span class="keyword">for</span>(状态<span class="number">1</span> ：所有状态<span class="number">1</span>的值)&#123;</span><br><span class="line">    <span class="keyword">for</span>(状态<span class="number">2</span> ：所有状态<span class="number">2</span>的值)&#123;</span><br><span class="line">        <span class="keyword">for</span>(...)&#123;</span><br><span class="line">          <span class="comment">//状态转移方程</span></span><br><span class="line">          dp[状态<span class="number">1</span>][状态<span class="number">2</span>][...] = 求最值</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>操作系统概述</title>
+    <url>/2024/04/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h1 id="第一章-计算机系统概述"><a href="#第一章-计算机系统概述" class="headerlink" title="第一章 计算机系统概述"></a>第一章 计算机系统概述</h1><h3 id="计算机硬件组成"><a href="#计算机硬件组成" class="headerlink" title="计算机硬件组成"></a>计算机硬件组成</h3><p>冯*诺依曼体系定义为：中央处理器（运算器，控制器），存储器(主存),I&#x2F;O设备（输入设备，输出设备）五个部件构成。</p>
+<p>各个硬件之间使用总线以某种方式连接起来</p>
+<p>总线主要由数据线，地址线，控制线组成。CPU连接计算机各个主要部件的总线称为系统总线。</p>
+<h3 id="计算机性能指标"><a href="#计算机性能指标" class="headerlink" title="计算机性能指标"></a>计算机性能指标</h3><p>１时间是衡量计算机系统性能最基本标准</p>
+<p>时间周期是计算机中最基本，最小的时间单位。在一个时钟周期内，CPU仅完成一个最基本的动作。十周周期是时钟频率的倒数，CPU主频的提高对应时钟周期变短。</p>
+<p>２CPI(Clock Cycles Per Instruction)执行每条指令所需要的平均周期数。</p>
+<p>若程序中包含的总指令数为IC表示，程序执行所需周期数为m,程序执行所需时钟周期为m，时钟周期 为T，频率为f,则CPI为：</p>
+<p>$$<br>CPI&#x3D;\frac{m}{IC}<br>$$</p>
+<p>若知道某程序每类指令的使用频率(Pi),每类指令的CPI(用CPI i表示)，每类指令的条数(用ICi表示)，则程序的CPI:</p>
+<p>$$<br>CPI&#x3D;\sum_{i&#x3D;1}^{n}{(CPI_{i}*P_{i})&#x3D;\sum_{i&#x3D;1}^{n}{CPI_{i}*\frac{IC_{i}}{IC}}}<br>$$</p>
 ]]></content>
   </entry>
 </search>
